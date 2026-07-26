@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Contrato · Victorino Eng</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div>
+        <h1>Victorino Eng — Gerador de Contratos</h1>
+        <div class="sub">Portal de Operações · SaaS</div>
+      </div>
+    </div>
+    <nav>
+      <a href="index.html" class="ativo">Novo contrato</a>
+      <a href="contratos.html">Contratos</a>
+    </nav>
+  </header>
+
+  <main class="container" id="app" style="display:none">
+    <div id="banner-firebase"></div>
+
+    <div class="card">
+      <h2>Gerar novo contrato</h2>
+      <p class="desc">Os dados da Victorino Eng (CONTRATADA) já estão fixos. Preencha somente os dados do cliente (CONTRATANTE) e os valores.</p>
+
+      <form id="form-contrato">
+        <fieldset>
+          <legend>Tipo de cliente</legend>
+          <div class="tipo-toggle">
+            <label><input type="radio" name="tipoCliente" value="PJ" checked><span>🏢 Pessoa Jurídica (PJ)<small>Empresa com CNPJ</small></span></label>
+            <label><input type="radio" name="tipoCliente" value="PF"><span>👤 Pessoa Física (PF)<small>Cliente com CPF</small></span></label>
+          </div>
+        </fieldset>
+
+        <!-- ===== Dados PJ ===== -->
+        <fieldset id="bloco-pj">
+          <legend>Dados da empresa (CONTRATANTE)</legend>
+          <div class="grid">
+            <div class="field full"><label>Razão social *</label><input name="razaoSocial" placeholder="Ex.: Work Pro Apoio Operacional Ltda"></div>
+            <div class="field"><label>CNPJ *</label><input name="cnpj" data-mask="cnpj" placeholder="00.000.000/0000-00"></div>
+            <div class="field"><label>Representante legal *</label><input name="repNome" placeholder="Nome do sócio/administrador"></div>
+            <div class="field"><label>RG do representante</label><input name="repRg" placeholder="0000000 SESP/UF"></div>
+            <div class="field"><label>CPF do representante *</label><input name="repCpf" data-mask="cpf" placeholder="000.000.000-00"></div>
+          </div>
+        </fieldset>
+
+        <!-- ===== Dados PF ===== -->
+        <fieldset id="bloco-pf" style="display:none">
+          <legend>Dados da pessoa (CONTRATANTE)</legend>
+          <div class="grid">
+            <div class="field full"><label>Nome completo *</label><input name="nome" placeholder="Nome completo do cliente"></div>
+            <div class="field"><label>CPF *</label><input name="cpf" data-mask="cpf" placeholder="000.000.000-00"></div>
+            <div class="field"><label>RG</label><input name="rg" placeholder="0000000 SESP/UF"></div>
+            <div class="field col-3"><label>Nacionalidade</label><input name="nacionalidade" placeholder="brasileiro(a)"></div>
+            <div class="field col-3"><label>Estado civil</label><input name="estadoCivil" placeholder="solteiro(a)"></div>
+            <div class="field col-3"><label>Profissão</label><input name="profissao" placeholder="empresário(a)"></div>
+          </div>
+        </fieldset>
+
+        <!-- ===== Endereço ===== -->
+        <fieldset>
+          <legend>Endereço do cliente</legend>
+          <div class="grid">
+            <div class="field full"><label>Logradouro *</label><input name="logradouro" placeholder="Rua / Avenida"></div>
+            <div class="field"><label>Número</label><input name="numero" placeholder="Nº"></div>
+            <div class="field"><label>Complemento</label><input name="complemento" placeholder="Sala, andar, bloco..."></div>
+            <div class="field"><label>Bairro</label><input name="bairro"></div>
+            <div class="field"><label>CEP</label><input name="cep" data-mask="cep" placeholder="00000-000"></div>
+            <div class="field"><label>Cidade *</label><input name="cidade"></div>
+            <div class="field"><label>UF *</label><input name="uf" maxlength="2" placeholder="ES" style="text-transform:uppercase"></div>
+          </div>
+        </fieldset>
+
+        <!-- ===== Termos financeiros ===== -->
+        <fieldset>
+          <legend>Condições do contrato</legend>
+          <div class="grid">
+            <div class="field full"><label>Objeto (nome do software)</label><input name="objeto" value="Portal de Operações"></div>
+            <div class="field"><label>Taxa de implementação (Setup) R$ *</label><input name="valorSetup" data-mask="dinheiro" value="900.00"></div>
+            <div class="field"><label>Mensalidade R$ *</label><input name="valorMensalidade" data-mask="dinheiro" value="200.00"></div>
+            <div class="field"><label>Dia de vencimento</label><input name="diaVencimento" type="number" min="1" max="28" value="5"></div>
+            <div class="field"><label>Data de assinatura *</label><input name="dataAssinatura" type="date"></div>
+            <div class="field"><label>Cidade (foro/assinatura)</label><input name="cidadeAssinatura" value="Serra"></div>
+            <div class="field"><label>UF</label><input name="ufAssinatura" value="ES" maxlength="2" style="text-transform:uppercase"></div>
+          </div>
+          <div class="banner info" style="margin:14px 0 0">
+            <span>ℹ️</span>
+            <span><strong>Regras já embutidas neste modelo:</strong> carência (fidelidade) de <strong>1 ano (12 meses)</strong> e reajuste da mensalidade de <strong>+50% a cada 12 meses</strong>.</span>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">✚ Gerar contrato e criar link</button>
+          <a href="#" id="btn-preview" class="btn btn-outline">👁 Pré-visualizar</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Tela de senha -->
+  <div class="modal-bg show" id="login-bg">
+    <div class="modal">
+      <h3>🔒 Acesso ao painel</h3>
+      <p class="desc">Digite a senha administrativa para gerar contratos.</p>
+      <div class="field"><input type="password" id="senha-input" placeholder="Senha"></div>
+      <div id="login-erro" style="color:var(--vermelho);font-size:13px;margin:8px 0;display:none">Senha incorreta.</div>
+      <div class="actions"><button class="btn btn-primary btn-block" id="btn-login">Entrar</button></div>
+    </div>
+  </div>
+
+  <!-- Modal do link gerado -->
+  <div class="modal-bg" id="modal-link">
+    <div class="modal">
+      <h3>✅ Contrato gerado!</h3>
+      <p class="desc">Envie este link para o seu cliente revisar e assinar:</p>
+      <div class="link-box">
+        <input id="link-gerado" readonly>
+        <button class="btn btn-gold" id="btn-copiar">Copiar</button>
+      </div>
+      <div class="actions">
+        <a href="#" id="btn-abrir" target="_blank" class="btn btn-outline">Abrir contrato</a>
+        <button class="btn btn-ghost" id="btn-fechar">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

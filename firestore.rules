@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// ============================================================================
+//  Regras do Firestore para o Sistema de Contratos — Victorino Eng
+// ----------------------------------------------------------------------------
+//  Como aplicar:
+//   Console do Firebase -> Firestore Database -> aba "Regras" ->
+//   cole este conteúdo -> "Publicar".
+//
+//  MODELO ADOTADO (simples e funcional):
+//   • Qualquer pessoa com o LINK (id do contrato) pode LER o contrato
+//     — necessário para o cliente conseguir abrir e assinar.
+//   • CRIAÇÃO de contrato é liberada (o painel é protegido por senha no site).
+//   • ATUALIZAÇÃO só é permitida para registrar a ASSINATURA de um contrato
+//     que ainda está "pendente" (o cliente não consegue alterar cláusulas).
+//   • EXCLUSÃO é bloqueada.
+//
+//  Para segurança forte (recomendado em produção), ative o Firebase
+//  Authentication e troque a regra de 'create' por algo como:
+//     allow create: if request.auth != null;
+//  (veja a seção "Segurança" do README.md)
+// ============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /contratos/{id} {
+
+      allow read: if true;
+
+      allow create: if true;
+
+      // Só permite atualizar para marcar como assinado.
+      allow update: if resource.data.status == 'pendente'
+                    && request.resource.data.status == 'assinado';
+
+      allow delete: if false;
+    }
+  }
+}

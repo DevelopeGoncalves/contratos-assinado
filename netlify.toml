@@ -1,0 +1,16 @@
+# Configuração da Netlify — site estático, sem etapa de build.
+[build]
+  publish = "."
+  command = ""
+
+# Garante o tipo correto para módulos ES.
+[[headers]]
+  for = "/js/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+
+# Evita indexação em buscadores (é uma ferramenta interna).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
