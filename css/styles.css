@@ -177,6 +177,26 @@ table.lista tr:hover td { background: #f8fafc; }
 
 .loading { text-align: center; padding: 60px; color: var(--cinza); }
 
+/* ---- Cards de navegação (dashboard) ---------------------------------- */
+.card-link {
+  display: block; text-decoration: none; color: inherit; border: 1px solid var(--borda);
+  border-radius: 12px; padding: 20px; background: #fbfcfe; transition: border-color .15s, transform .08s, box-shadow .15s;
+}
+.card-link:hover { border-color: var(--azul-claro); transform: translateY(-2px); box-shadow: var(--sombra); }
+.card-link .ico { font-size: 30px; }
+.card-link h3 { margin: 8px 0 4px; color: var(--azul); font-size: 17px; }
+.card-link p { margin: 0; color: var(--cinza); font-size: 13.5px; }
+
+/* ---- Valores em modo leitura (cliente) ------------------------------- */
+.valores-ro { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (max-width: 640px) { .valores-ro { grid-template-columns: 1fr; } }
+.ro-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  background: var(--cinza-claro); border: 1px solid var(--borda); border-radius: 9px; padding: 10px 14px;
+}
+.ro-item span { color: var(--cinza); font-size: 13px; }
+.ro-item strong { color: var(--azul); text-align: right; }
+
 /* ---- Impressão / PDF ------------------------------------------------- */
 @media print {
   body { background: #fff; }

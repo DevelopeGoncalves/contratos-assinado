@@ -11,22 +11,44 @@
   <header class="topbar no-print">
     <div class="brand">
       <div class="logo">V</div>
-      <div>
-        <h1>Victorino Eng</h1>
-        <div class="sub">Contrato de Licenciamento de Software (SaaS)</div>
-      </div>
+      <div><h1>Victorino Eng</h1><div class="sub">Contrato</div></div>
     </div>
-    <div class="actions" style="margin:0">
-      <button class="btn btn-outline" onclick="window.print()">🖨 Baixar PDF / Imprimir</button>
-    </div>
+    <nav>
+      <a href="contratos.html">← Voltar</a>
+      <a href="#" id="btn-sair">Sair</a>
+    </nav>
   </header>
 
-  <main class="container">
-    <div id="conteudo">
-      <div class="loading">Carregando contrato…</div>
+  <main class="container" id="app" style="display:none">
+    <!-- Painel de edição (admin) -->
+    <div class="card no-print" id="painel-edicao">
+      <h2>Ajustar valores deste contrato</h2>
+      <p class="desc">Você pode alterar os valores só deste cliente antes de gerar o PDF. Depois clique em <strong>Salvar</strong>.</p>
+      <form id="form-valores">
+        <div class="grid">
+          <div class="field full"><label>Objeto (nome do software)</label><input name="objeto"></div>
+          <div class="field"><label>Taxa de implementação (Setup) R$</label><input name="valorSetup" type="number" step="0.01"></div>
+          <div class="field"><label>Mensalidade R$</label><input name="valorMensalidade" type="number" step="0.01"></div>
+          <div class="field"><label>Dia de vencimento</label><input name="diaVencimento" type="number" min="1" max="28"></div>
+          <div class="field"><label>Data de assinatura</label><input name="dataAssinatura" type="date"></div>
+          <div class="field"><label>Cidade (foro/assinatura)</label><input name="cidadeAssinatura"></div>
+          <div class="field"><label>UF</label><input name="ufAssinatura" maxlength="2" style="text-transform:uppercase"></div>
+          <div class="field"><label>Carência (meses)</label><input name="fidelidadeMeses" type="number" min="1"></div>
+          <div class="field"><label>Reajuste (% ao ano)</label><input name="reajustePercent" type="number" min="0"></div>
+        </div>
+        <div id="msg" class="banner ok" style="display:none;margin-top:14px"></div>
+        <div class="actions" style="margin-top:14px">
+          <button type="submit" class="btn btn-primary">💾 Salvar alterações</button>
+          <button type="button" id="btn-pdf" class="btn btn-gold">🖨 Baixar PDF / Imprimir</button>
+          <button type="button" id="btn-excluir" class="btn btn-ghost" style="margin-left:auto">🗑 Excluir</button>
+        </div>
+      </form>
     </div>
+
+    <div id="doc-alvo"></div>
   </main>
 
-  <script type="module" src="js/sign.js"></script>
+  <div class="loading" id="carregando">Carregando…</div>
+  <script type="module" src="js/contrato-admin.js"></script>
 </body>
 </html>

@@ -11,35 +11,25 @@
   <header class="topbar">
     <div class="brand">
       <div class="logo">V</div>
-      <div>
-        <h1>Victorino Eng — Contratos</h1>
-        <div class="sub">Acompanhamento e assinaturas</div>
-      </div>
+      <div><h1>Victorino Eng — Contratos</h1><div class="sub">Recebidos dos clientes</div></div>
     </div>
     <nav>
-      <a href="index.html">Novo contrato</a>
+      <a href="index.html">Início</a>
       <a href="contratos.html" class="ativo">Contratos</a>
+      <a href="configuracoes.html">Configurações</a>
+      <a href="#" id="btn-sair">Sair</a>
     </nav>
   </header>
 
   <main class="container" id="app" style="display:none">
     <div class="card">
-      <h2>Contratos gerados</h2>
-      <p class="desc">Lista de todos os contratos, com status de assinatura. Clique em um contrato para abrir o link.</p>
+      <h2>Contratos recebidos</h2>
+      <p class="desc">Clique em <strong>Abrir</strong> para revisar os dados, ajustar valores se precisar e gerar o PDF.</p>
       <div id="lista"><div class="loading">Carregando…</div></div>
     </div>
   </main>
 
-  <div class="modal-bg show" id="login-bg">
-    <div class="modal">
-      <h3>🔒 Acesso ao painel</h3>
-      <p class="desc">Digite a senha administrativa.</p>
-      <div class="field"><input type="password" id="senha-input" placeholder="Senha"></div>
-      <div id="login-erro" style="color:var(--vermelho);font-size:13px;margin:8px 0;display:none">Senha incorreta.</div>
-      <div class="actions"><button class="btn btn-primary btn-block" id="btn-login">Entrar</button></div>
-    </div>
-  </div>
-
+  <div class="loading" id="carregando">Carregando…</div>
   <script type="module" src="js/list.js"></script>
 </body>
 </html>

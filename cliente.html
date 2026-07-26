@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preencher contrato · Victorino Eng</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div><h1>Victorino Eng</h1><div class="sub">Preenchimento de contrato</div></div>
+    </div>
+  </header>
+
+  <main class="container" id="app" style="display:none">
+    <div class="card">
+      <h2>Seus dados para o contrato</h2>
+      <p class="desc">Preencha os campos abaixo. Ao final, seus dados são enviados com segurança para a Victorino Eng gerar o contrato. Os valores já foram definidos pela empresa e aparecem apenas para sua leitura.</p>
+
+      <form id="form-cliente">
+        <fieldset>
+          <legend>Tipo de cliente</legend>
+          <div class="tipo-toggle">
+            <label><input type="radio" name="tipoCliente" value="PJ" checked><span>🏢 Pessoa Jurídica (PJ)<small>Empresa com CNPJ</small></span></label>
+            <label><input type="radio" name="tipoCliente" value="PF"><span>👤 Pessoa Física (PF)<small>Cliente com CPF</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset id="bloco-pj">
+          <legend>Dados da empresa</legend>
+          <div class="grid">
+            <div class="field full"><label>Razão social *</label><input name="razaoSocial"></div>
+            <div class="field"><label>CNPJ *</label><input name="cnpj" data-mask="cnpj" placeholder="00.000.000/0000-00"></div>
+            <div class="field"><label>Representante legal *</label><input name="repNome"></div>
+            <div class="field"><label>RG do representante</label><input name="repRg"></div>
+            <div class="field"><label>CPF do representante *</label><input name="repCpf" data-mask="cpf" placeholder="000.000.000-00"></div>
+          </div>
+        </fieldset>
+
+        <fieldset id="bloco-pf" style="display:none">
+          <legend>Seus dados</legend>
+          <div class="grid">
+            <div class="field full"><label>Nome completo *</label><input name="nome"></div>
+            <div class="field"><label>CPF *</label><input name="cpf" data-mask="cpf" placeholder="000.000.000-00"></div>
+            <div class="field"><label>RG</label><input name="rg"></div>
+            <div class="field col-3"><label>Nacionalidade</label><input name="nacionalidade" placeholder="brasileiro(a)"></div>
+            <div class="field col-3"><label>Estado civil</label><input name="estadoCivil"></div>
+            <div class="field col-3"><label>Profissão</label><input name="profissao"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Endereço</legend>
+          <div class="grid">
+            <div class="field full"><label>Logradouro *</label><input name="logradouro" placeholder="Rua / Avenida"></div>
+            <div class="field"><label>Número</label><input name="numero"></div>
+            <div class="field"><label>Complemento</label><input name="complemento" placeholder="Sala, andar, bloco..."></div>
+            <div class="field"><label>Bairro</label><input name="bairro"></div>
+            <div class="field"><label>CEP</label><input name="cep" data-mask="cep" placeholder="00000-000"></div>
+            <div class="field"><label>Cidade *</label><input name="cidade"></div>
+            <div class="field"><label>UF *</label><input name="uf" maxlength="2" style="text-transform:uppercase"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Condições do contrato (somente leitura)</legend>
+          <div id="valores-leitura" class="valores-ro"></div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">✅ Enviar meus dados</button>
+          <button type="button" id="btn-ver" class="btn btn-outline">👁 Ver o contrato completo</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="preview" class="no-print" style="display:none"></div>
+  </main>
+
+  <!-- Sucesso -->
+  <main class="container" id="tela-ok" style="display:none">
+    <div class="card" style="text-align:center;max-width:560px;margin:40px auto">
+      <div style="font-size:52px">✅</div>
+      <h2>Dados enviados com sucesso!</h2>
+      <p class="desc">Obrigado! A Victorino Eng recebeu suas informações e vai finalizar o seu contrato. Em breve entraremos em contato.</p>
+    </div>
+  </main>
+
+  <div class="loading" id="carregando">Carregando…</div>
+  <script type="module" src="js/cliente.js"></script>
+</body>
+</html>

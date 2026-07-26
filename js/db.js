@@ -1,39 +1,82 @@
 // ============================================================================
-//  Camada de acesso ao banco (Firestore)
-//
-//  O SDK do Firebase é carregado sob demanda (dynamic import). Assim o
-//  gerador/impressão de contrato funciona mesmo antes de configurar o
-//  Firebase e o site não quebra caso a CDN esteja indisponível.
+//  Camada de acesso ao Firebase: Autenticação + Firestore
+//  (SDK carregado sob demanda via dynamic import).
 // ============================================================================
 import { firebaseConfig, isConfigured } from "./firebase-config.js";
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2";
-let db = null;
-let fs = null;          // funções do firestore
-let iniciado = false;
+let app = null, db = null, auth = null;
+let fs = null, au = null;
+let iniciando = null;
 
-async function garantirDB() {
-  if (iniciado) return db;
-  iniciado = true;
-  if (!isConfigured()) return null;
-  try {
-    const { initializeApp } = await import(`${SDK}/firebase-app.js`);
-    fs = await import(`${SDK}/firebase-firestore.js`);
-    const app = initializeApp(firebaseConfig);
-    db = fs.getFirestore(app);
-  } catch (e) {
-    console.error("Falha ao iniciar o Firebase:", e);
-    db = null;
+async function init() {
+  if (db) return;
+  if (!isConfigured()) throw new Error("Firebase não configurado.");
+  if (!iniciando) {
+    iniciando = (async () => {
+      const { initializeApp } = await import(`${SDK}/firebase-app.js`);
+      fs = await import(`${SDK}/firebase-firestore.js`);
+      au = await import(`${SDK}/firebase-auth.js`);
+      app = initializeApp(firebaseConfig);
+      db = fs.getFirestore(app);
+      auth = au.getAuth(app);
+    })();
   }
-  return db;
+  await iniciando;
 }
 
-// Indica se o Firebase está configurado (para mensagens da interface).
 export const firebaseAtivo = () => isConfigured();
 
+// ---- AUTENTICAÇÃO (admin) --------------------------------------------------
+
+// Observa o estado de login. Chama cb(usuario|null). Retorna quando pronto.
+export async function observarAuth(cb) {
+  await init();
+  au.onAuthStateChanged(auth, cb);
+}
+
+export async function entrar(email, senha) {
+  await init();
+  const cred = await au.signInWithEmailAndPassword(auth, email, senha);
+  return cred.user;
+}
+
+export async function sair() {
+  await init();
+  await au.signOut(auth);
+}
+
+export function usuarioAtual() {
+  return auth ? auth.currentUser : null;
+}
+
+// Protege uma página de admin: se não houver login, redireciona para o painel.
+// Chama onOk(usuario) quando há um admin logado.
+export async function exigirLogin(onOk, loginUrl = "index.html") {
+  await init();
+  au.onAuthStateChanged(auth, (user) => {
+    if (user) onOk(user);
+    else location.href = loginUrl;
+  });
+}
+
+// ---- CONFIGURAÇÃO (dados da empresa + valores padrão) ----------------------
+const CFG_DOC = ["config", "contrato"];
+
+export async function obterConfig() {
+  await init();
+  const snap = await fs.getDoc(fs.doc(db, ...CFG_DOC));
+  return snap.exists() ? snap.data() : null;
+}
+
+export async function salvarConfig(dados) {
+  await init();
+  await fs.setDoc(fs.doc(db, ...CFG_DOC), { ...dados, atualizadoEm: fs.serverTimestamp() }, { merge: true });
+}
+
+// ---- CONTRATOS -------------------------------------------------------------
 const COL = "contratos";
 
-// Gera um ID curto e legível para o contrato.
 export function novoId() {
   const chars = "abcdefghijkmnpqrstuvwxyz23456789";
   let s = "";
@@ -41,36 +84,39 @@ export function novoId() {
   return s;
 }
 
-export async function salvarContrato(dados) {
-  const d = await garantirDB();
-  if (!d) throw new Error("Firebase não configurado.");
-  const id = dados.id || novoId();
-  await fs.setDoc(fs.doc(d, COL, id), {
+// Criação PÚBLICA pelo cliente (só identificação; valores vêm do config).
+export async function criarContrato(dados) {
+  await init();
+  const id = novoId();
+  await fs.setDoc(fs.doc(db, COL, id), {
     ...dados,
     id,
-    status: dados.status || "pendente",
+    status: "pendente",
     createdAt: fs.serverTimestamp()
   });
   return id;
 }
 
+// Leitura/edição — apenas admin (garantido pelas regras do Firestore).
+export async function listarContratos() {
+  await init();
+  const q = fs.query(fs.collection(db, COL), fs.orderBy("createdAt", "desc"));
+  const snap = await fs.getDocs(q);
+  return snap.docs.map((d) => d.data());
+}
+
 export async function buscarContrato(id) {
-  const d = await garantirDB();
-  if (!d) throw new Error("Firebase não configurado.");
-  const snap = await fs.getDoc(fs.doc(d, COL, id));
+  await init();
+  const snap = await fs.getDoc(fs.doc(db, COL, id));
   return snap.exists() ? snap.data() : null;
 }
 
-export async function listarContratos() {
-  const d = await garantirDB();
-  if (!d) throw new Error("Firebase não configurado.");
-  const q = fs.query(fs.collection(d, COL), fs.orderBy("createdAt", "desc"));
-  const snap = await fs.getDocs(q);
-  return snap.docs.map((x) => x.data());
+export async function atualizarContrato(id, campos) {
+  await init();
+  await fs.updateDoc(fs.doc(db, COL, id), campos);
 }
 
-export async function assinarContrato(id, assinatura) {
-  const d = await garantirDB();
-  if (!d) throw new Error("Firebase não configurado.");
-  await fs.updateDoc(fs.doc(d, COL, id), { status: "assinado", assinatura });
+export async function excluirContrato(id) {
+  await init();
+  await fs.deleteDoc(fs.doc(db, COL, id));
 }

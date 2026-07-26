@@ -1,33 +1,22 @@
 // ============================================================================
-//  Tela "Contratos" — listagem
+//  contratos.html — lista de contratos recebidos (admin).
 // ============================================================================
-import { listarContratos, firebaseAtivo } from "./db.js";
-import { ADMIN_SENHA } from "./firebase-config.js";
+import { exigirLogin, sair, listarContratos } from "./db.js";
 import { nomeCliente, docCliente } from "./contract-template.js";
 import { formatarMoeda } from "./utils.js";
 
-const CHAVE = "victorino_admin_ok";
-const loginBg = document.getElementById("login-bg");
-const app = document.getElementById("app");
+document.getElementById("btn-sair").addEventListener("click", async (e) => {
+  e.preventDefault(); await sair(); location.href = "index.html";
+});
 
-function abrir() { loginBg.classList.remove("show"); app.style.display = "block"; carregar(); }
-if (sessionStorage.getItem(CHAVE) === "1") abrir();
-
-document.getElementById("btn-login").addEventListener("click", login);
-document.getElementById("senha-input").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
-function login() {
-  if (document.getElementById("senha-input").value === ADMIN_SENHA) {
-    sessionStorage.setItem(CHAVE, "1"); abrir();
-  } else document.getElementById("login-erro").style.display = "block";
-}
+exigirLogin(async () => {
+  document.getElementById("carregando").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  carregar();
+});
 
 async function carregar() {
   const alvo = document.getElementById("lista");
-  if (!firebaseAtivo()) {
-    alvo.innerHTML = `<div class="banner warn"><span>⚠️</span><span>
-      <strong>Firebase não configurado.</strong> Configure <code>js/firebase-config.js</code> para listar os contratos salvos.</span></div>`;
-    return;
-  }
   let itens = [];
   try {
     itens = await listarContratos();
@@ -37,38 +26,28 @@ async function carregar() {
     return;
   }
   if (!itens.length) {
-    alvo.innerHTML = `<div class="banner info"><span>ℹ️</span><span>Nenhum contrato gerado ainda.
-      <a href="index.html">Criar o primeiro</a>.</span></div>`;
+    alvo.innerHTML = `<div class="banner info"><span>ℹ️</span><span>Nenhum contrato recebido ainda.
+      Compartilhe o link do cliente (na tela <a href="index.html">Início</a>).</span></div>`;
     return;
   }
 
-  const base = `${location.origin}${location.pathname.replace(/contratos\.html$/, "")}`;
-  const linhas = itens.map((c) => {
-    const link = `${base}contrato.html?id=${c.id}`;
-    const data = c.dataAssinatura ? c.dataAssinatura.split("-").reverse().join("/") : "—";
-    const tag = c.status === "assinado"
-      ? `<span class="tag assinado">Assinado</span>`
-      : `<span class="tag pendente">Pendente</span>`;
-    return `<tr>
+  const data = (c) => {
+    try { return c.createdAt?.toDate ? c.createdAt.toDate().toLocaleDateString("pt-BR") : "—"; }
+    catch { return "—"; }
+  };
+  const tagCls = { pendente: "pendente", revisado: "assinado", gerado: "assinado" };
+  const tagTxt = { pendente: "Novo", revisado: "Revisado", gerado: "PDF gerado" };
+
+  const linhas = itens.map((c) => `
+    <tr>
       <td><strong>${nomeCliente(c)}</strong><br><small style="color:var(--cinza)">${c.tipoCliente} · ${docCliente(c)}</small></td>
       <td>R$ ${formatarMoeda(c.valorMensalidade)}/mês</td>
-      <td>${data}</td>
-      <td>${tag}</td>
-      <td>
-        <a href="${link}" target="_blank" class="btn btn-outline" style="padding:7px 12px;font-size:13px">Abrir</a>
-        <button class="btn btn-ghost btn-copy" data-link="${link}" style="padding:7px 12px;font-size:13px">Copiar link</button>
-      </td>
-    </tr>`;
-  }).join("");
+      <td>${data(c)}</td>
+      <td><span class="tag ${tagCls[c.status] || "pendente"}">${tagTxt[c.status] || "Novo"}</span></td>
+      <td><a href="contrato.html?id=${c.id}" class="btn btn-outline" style="padding:7px 14px;font-size:13px">Abrir</a></td>
+    </tr>`).join("");
 
   alvo.innerHTML = `<table class="lista">
-    <thead><tr><th>Cliente</th><th>Mensalidade</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+    <thead><tr><th>Cliente</th><th>Mensalidade</th><th>Recebido</th><th>Status</th><th></th></tr></thead>
     <tbody>${linhas}</tbody></table>`;
-
-  alvo.querySelectorAll(".btn-copy").forEach((b) =>
-    b.addEventListener("click", () => {
-      navigator.clipboard?.writeText(b.dataset.link);
-      const t = b.textContent; b.textContent = "Copiado!";
-      setTimeout(() => (b.textContent = t), 1400);
-    }));
 }

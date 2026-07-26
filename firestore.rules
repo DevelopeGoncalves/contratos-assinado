@@ -1,39 +1,49 @@
 rules_version = '2';
 
 // ============================================================================
-//  Regras do Firestore para o Sistema de Contratos — Victorino Eng
+//  Regras do Firestore — Sistema de Contratos Victorino Eng
 // ----------------------------------------------------------------------------
 //  Como aplicar:
 //   Console do Firebase -> Firestore Database -> aba "Regras" ->
 //   cole este conteúdo -> "Publicar".
 //
-//  MODELO ADOTADO (simples e funcional):
-//   • Qualquer pessoa com o LINK (id do contrato) pode LER o contrato
-//     — necessário para o cliente conseguir abrir e assinar.
-//   • CRIAÇÃO de contrato é liberada (o painel é protegido por senha no site).
-//   • ATUALIZAÇÃO só é permitida para registrar a ASSINATURA de um contrato
-//     que ainda está "pendente" (o cliente não consegue alterar cláusulas).
-//   • EXCLUSÃO é bloqueada.
-//
-//  Para segurança forte (recomendado em produção), ative o Firebase
-//  Authentication e troque a regra de 'create' por algo como:
-//     allow create: if request.auth != null;
-//  (veja a seção "Segurança" do README.md)
+//  MODELO DE SEGURANÇA:
+//   • config/contrato  -> leitura pública (o cliente precisa ver os valores);
+//                         ESCRITA só para o admin logado (Firebase Auth).
+//   • contratos/{id}   -> o cliente pode APENAS CRIAR o próprio registro, e
+//                         somente com os VALORES iguais aos do config (não
+//                         consegue alterar preço, carência, etc.).
+//                         LER / EDITAR / EXCLUIR: só o admin logado.
 // ============================================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /contratos/{id} {
 
+    // Dados do config (valores fixos vêm daqui).
+    function cfg() {
+      return get(/databases/$(database)/documents/config/contrato).data;
+    }
+
+    match /config/{doc} {
       allow read: if true;
+      allow write: if request.auth != null;
+    }
 
-      allow create: if true;
+    match /contratos/{id} {
+      // Somente o admin logado lê, edita ou exclui.
+      allow read, update, delete: if request.auth != null;
 
-      // Só permite atualizar para marcar como assinado.
-      allow update: if resource.data.status == 'pendente'
-                    && request.resource.data.status == 'assinado';
-
-      allow delete: if false;
+      // Criação pública pelo cliente: precisa nascer "pendente" e com os
+      // valores EXATAMENTE iguais aos definidos pelo admin no config.
+      allow create: if request.resource.data.status == 'pendente'
+        && request.resource.data.objeto == cfg().objeto
+        && request.resource.data.valorSetup == cfg().valorSetup
+        && request.resource.data.valorMensalidade == cfg().valorMensalidade
+        && request.resource.data.diaVencimento == cfg().diaVencimento
+        && request.resource.data.cidadeAssinatura == cfg().cidadeAssinatura
+        && request.resource.data.ufAssinatura == cfg().ufAssinatura
+        && request.resource.data.fidelidadeMeses == cfg().fidelidadeMeses
+        && request.resource.data.reajustePercent == cfg().reajustePercent;
     }
   }
 }

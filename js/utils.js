@@ -40,6 +40,18 @@ function trioExtenso(n) {
   return partes.join(" e ");
 }
 
+// Converte um inteiro (0..999.999) para extenso, sem "reais".
+export function inteiroExtenso(n) {
+  n = Math.floor(Number(n || 0));
+  if (n === 0) return "zero";
+  const milhar = Math.floor(n / 1000);
+  const resto = n % 1000;
+  const partes = [];
+  if (milhar) partes.push(milhar === 1 ? "mil" : `${trioExtenso(milhar)} mil`);
+  if (resto) partes.push(trioExtenso(resto));
+  return partes.join(" e ");
+}
+
 // Converte um valor numérico para extenso completo em reais.
 export function valorPorExtenso(valor) {
   const num = Math.floor(Number(valor || 0));
