@@ -2,7 +2,7 @@
 //  contratos.html — lista de contratos recebidos (admin).
 // ============================================================================
 import { exigirLogin, sair, listarContratos } from "./db.js";
-import { nomeCliente, docCliente } from "./contract-template.js";
+import { nomeCliente, docCliente } from "./contract-template.js?v=3";
 import { formatarMoeda } from "./utils.js";
 
 document.getElementById("btn-sair").addEventListener("click", async (e) => {

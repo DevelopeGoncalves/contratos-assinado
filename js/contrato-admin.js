@@ -2,7 +2,7 @@
 //  contrato.html — visão do admin de um contrato: editar valores + gerar PDF.
 // ============================================================================
 import { exigirLogin, sair, obterConfig, buscarContrato, atualizarContrato, excluirContrato } from "./db.js";
-import { gerarContratoHTML } from "./contract-template.js";
+import { gerarContratoHTML } from "./contract-template.js?v=3";
 
 const $ = (id) => document.getElementById(id);
 const id = new URLSearchParams(location.search).get("id");

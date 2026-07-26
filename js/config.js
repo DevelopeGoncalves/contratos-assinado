@@ -2,7 +2,7 @@
 //  configuracoes.html — edição da config (empresa + valores). Só admin.
 // ============================================================================
 import { exigirLogin, sair, obterConfig, salvarConfig } from "./db.js";
-import { CONFIG_PADRAO } from "./contract-template.js";
+import { CONFIG_PADRAO } from "./contract-template.js?v=3";
 
 const $ = (id) => document.getElementById(id);
 

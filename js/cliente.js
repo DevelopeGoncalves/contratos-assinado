@@ -4,7 +4,7 @@
 //  junto ao contrato para o admin conferir e gerar o PDF.
 // ============================================================================
 import { obterConfig, criarContrato, firebaseAtivo } from "./db.js";
-import { gerarContratoHTML, CAMPOS_VALORES } from "./contract-template.js";
+import { gerarContratoHTML, CAMPOS_VALORES } from "./contract-template.js?v=3";
 import { mascaraCNPJ, mascaraCPF, mascaraCEP, formatarMoeda } from "./utils.js";
 
 const $ = (id) => document.getElementById(id);
