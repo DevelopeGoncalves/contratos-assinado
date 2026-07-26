@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel · Victorino Eng</title>
   <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="img/logo_principal.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="logo">V</div>
-      <div>
-        <h1>Victorino Eng — Painel</h1>
-        <div class="sub">Gerador de contratos SaaS</div>
-      </div>
+      <a href="index.html"><img src="img/logo_horizontal.png" alt="Victorino Eng" class="logo-img"></a>
     </div>
     <nav id="nav" style="display:none">
       <a href="index.html" class="ativo">Início</a>
@@ -25,16 +22,17 @@
   </header>
 
   <!-- LOGIN -->
-  <main class="container" id="tela-login" style="display:none">
-    <div class="card" style="max-width:440px;margin:40px auto">
-      <h2>🔒 Acesso do administrador</h2>
-      <p class="desc">Entre com o e-mail e senha cadastrados no Firebase Authentication.</p>
-      <div class="field" style="margin-bottom:14px"><label>E-mail</label><input type="email" id="email" placeholder="voce@email.com"></div>
+  <div class="login-hero" id="tela-login" style="display:none">
+    <div class="login-card">
+      <img src="img/logo_principal.png" alt="Victorino Eng" class="login-logo">
+      <h2>Acesso do administrador</h2>
+      <p class="desc">Entre com o e-mail e senha cadastrados no Firebase.</p>
+      <div class="field" style="margin:16px 0"><label>E-mail</label><input type="email" id="email" placeholder="voce@email.com"></div>
       <div class="field" style="margin-bottom:14px"><label>Senha</label><input type="password" id="senha" placeholder="Sua senha"></div>
       <div id="login-erro" class="banner warn" style="display:none;margin-bottom:14px"></div>
       <button class="btn btn-primary btn-block" id="btn-entrar">Entrar</button>
     </div>
-  </main>
+  </div>
 
   <!-- DASHBOARD -->
   <main class="container" id="tela-painel" style="display:none">

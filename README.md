@@ -31,7 +31,8 @@ configuracoes.html    → Admin: dados da empresa + valores padrão (salvos no F
 contratos.html        → Admin: lista de contratos enviados pelos clientes
 contrato.html         → Admin: revisar 1 contrato, ajustar valores e gerar PDF
 cliente.html          → PÚBLICO: formulário que o cliente preenche (sem senha)
-css/styles.css        → Estilos
+css/styles.css        → Estilos (identidade visual da marca)
+img/                  → Logos da Victorino Eng (horizontal e principal)
 js/firebase-config.js → Chaves do Firebase (já preenchidas)
 js/db.js              → Auth + Firestore (config e contratos)
 js/contract-template.js → Texto do contrato (empresa/valores vêm do Firebase)

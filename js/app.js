@@ -10,7 +10,7 @@ const telaPainel = $("tela-painel");
 
 function mostrar(el) {
   [carregando, telaLogin, telaPainel].forEach((x) => (x.style.display = "none"));
-  el.style.display = el === carregando ? "block" : "block";
+  el.style.display = el === telaLogin ? "grid" : "block";
 }
 
 if (!firebaseAtivo()) {

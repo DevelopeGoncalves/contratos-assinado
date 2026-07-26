@@ -2,16 +2,19 @@
    Sistema de Contratos — Victorino Eng
    ======================================================================== */
 :root {
-  --azul: #0b3d63;
-  --azul-claro: #1666a6;
-  --dourado: #c9a24b;
+  --roxo: #8058E8;          /* roxo da marca */
+  --ciano: #20B0F8;         /* ciano da marca */
+  --azul: #6A3FD6;          /* roxo escuro (títulos / botão primário) */
+  --azul-claro: #8058E8;    /* roxo da marca (foco / hover) */
+  --dourado: #20B0F8;       /* acento ciano */
+  --grad: linear-gradient(120deg, #20B0F8 0%, #8058E8 100%);
   --cinza: #64748b;
-  --cinza-claro: #f1f5f9;
-  --borda: #d8dfe8;
+  --cinza-claro: #f2f0fb;
+  --borda: #e2ddf3;
   --verde: #157347;
   --vermelho: #b02a37;
-  --texto: #1e2733;
-  --sombra: 0 6px 24px rgba(11, 61, 99, .10);
+  --texto: #241f33;
+  --sombra: 0 6px 24px rgba(96, 60, 180, .12);
 }
 
 * { box-sizing: border-box; }
@@ -25,27 +28,23 @@ body {
 
 /* ---- Cabeçalho / topo ------------------------------------------------- */
 .topbar {
-  background: linear-gradient(120deg, var(--azul), var(--azul-claro));
-  color: #fff;
-  padding: 16px 24px;
+  background: #fff;
+  color: var(--texto);
+  padding: 12px 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--sombra);
+  border-bottom: 1px solid var(--borda);
+  box-shadow: 0 2px 12px rgba(96, 60, 180, .06);
 }
 .topbar .brand { display: flex; align-items: center; gap: 12px; }
-.topbar .brand .logo {
-  width: 42px; height: 42px; border-radius: 10px;
-  background: var(--dourado); color: var(--azul);
-  display: grid; place-items: center; font-weight: 800; font-size: 20px;
-}
-.topbar h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: .3px; }
-.topbar .sub { font-size: 12px; opacity: .85; }
+.topbar .brand a { display: block; line-height: 0; }
+.logo-img { height: 40px; width: auto; display: block; }
 .topbar nav a {
-  color: #fff; text-decoration: none; margin-left: 18px; font-size: 14px;
-  opacity: .9; border-bottom: 2px solid transparent; padding-bottom: 3px;
+  color: var(--azul); text-decoration: none; margin-left: 20px; font-size: 14px;
+  font-weight: 600; border-bottom: 2px solid transparent; padding-bottom: 4px;
 }
-.topbar nav a:hover, .topbar nav a.ativo { opacity: 1; border-color: var(--dourado); }
+.topbar nav a:hover, .topbar nav a.ativo { border-color: var(--ciano); }
 
 /* ---- Layout ---------------------------------------------------------- */
 .container { max-width: 1000px; margin: 28px auto; padding: 0 18px; }
@@ -70,7 +69,7 @@ body {
 }
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none; border-color: var(--azul-claro);
-  box-shadow: 0 0 0 3px rgba(22, 102, 166, .15);
+  box-shadow: 0 0 0 3px rgba(128, 88, 232, .18);
 }
 .field .hint { font-size: 12px; color: var(--cinza); margin-top: 4px; }
 
@@ -89,7 +88,7 @@ fieldset legend { font-weight: 700; color: var(--azul); padding: 0 8px; font-siz
 .tipo-toggle label small { display: block; font-weight: 400; font-size: 12px; color: var(--cinza); }
 .tipo-toggle input:checked + span { color: var(--azul); }
 .tipo-toggle label:has(input:checked) {
-  border-color: var(--azul-claro); background: #eef6fd; color: var(--azul);
+  border-color: var(--azul-claro); background: #f2ecfd; color: var(--azul);
 }
 
 /* ---- Botões ---------------------------------------------------------- */
@@ -99,9 +98,9 @@ fieldset legend { font-weight: 700; color: var(--azul); padding: 0 8px; font-siz
   font-weight: 700; cursor: pointer; text-decoration: none; transition: transform .08s, filter .15s;
 }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--azul); color: #fff; }
-.btn-primary:hover { filter: brightness(1.1); }
-.btn-gold { background: var(--dourado); color: #3a2d00; }
+.btn-primary { background: var(--grad); color: #fff; box-shadow: 0 4px 14px rgba(128, 88, 232, .32); }
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-gold { background: var(--ciano); color: #06344a; }
 .btn-gold:hover { filter: brightness(1.05); }
 .btn-outline { background: #fff; color: var(--azul); border: 1.5px solid var(--azul); }
 .btn-ghost { background: var(--cinza-claro); color: #33475b; }
@@ -196,6 +195,25 @@ table.lista tr:hover td { background: #f8fafc; }
 }
 .ro-item span { color: var(--cinza); font-size: 13px; }
 .ro-item strong { color: var(--azul); text-align: right; }
+
+/* ---- Tela de login (com a marca) ------------------------------------ */
+.login-hero {
+  min-height: calc(100vh - 65px); display: grid; place-items: center; padding: 24px;
+  background: radial-gradient(1100px 480px at 50% -12%, rgba(32,176,248,.10), transparent),
+              radial-gradient(1000px 520px at 50% 112%, rgba(128,88,232,.13), transparent);
+}
+.login-card {
+  background: #fff; border: 1px solid var(--borda); border-radius: 18px; padding: 34px 30px;
+  max-width: 420px; width: 100%; box-shadow: var(--sombra); text-align: center;
+}
+.login-logo { width: 200px; max-width: 78%; height: auto; margin: 4px auto 18px; display: block; }
+.login-card h2 { justify-content: center; font-size: 19px; }
+.login-card .desc { text-align: center; }
+.login-card .field { text-align: left; }
+
+/* ---- Logo no topo do contrato (papel timbrado) ----------------------- */
+.doc-logo { text-align: center; margin: 0 0 22px; }
+.doc-logo img { height: 54px; width: auto; }
 
 /* ---- Impressão / PDF ------------------------------------------------- */
 @media print {

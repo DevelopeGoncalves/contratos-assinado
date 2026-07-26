@@ -88,6 +88,7 @@ export function gerarContratoHTML(d, cfg = {}) {
 
   return `
   <div class="doc">
+    <div class="doc-logo"><img src="img/logo_horizontal.png" alt="${emp.razaoSocial}"></div>
     <h1>CONTRATO DE LICENCIAMENTO DE SOFTWARE (SAAS)<br>E PRESTAÇÃO DE SERVIÇOS DE INFRAESTRUTURA E SUPORTE</h1>
 
     <p>Pelo presente instrumento particular, de um lado de forma justa e acordada, têm entre si estabelecido as partes abaixo qualificadas:</p>
