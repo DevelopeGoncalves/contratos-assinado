@@ -10,7 +10,7 @@ contrato **com os dados da sua empresa já prontos** e gera um **link** para o c
 - 🔗 Gera um **link único** por contrato para enviar ao cliente
 - ✍️ Cliente **assina digitalmente** (desenho da assinatura + aceite com data/hora)
 - 🖨️ Botão **Baixar PDF / Imprimir** (via impressão do navegador)
-- ☁️ Banco de dados no **Firebase (Firestore)** · hospedagem na **Netlify**
+- ☁️ Banco de dados no **Firebase (Firestore)** · hospedagem gratuita no **GitHub Pages**
 
 > **Alterações já aplicadas ao seu contrato original:**
 > - Carência (fidelidade) passou de **6 meses → 1 ano (12 meses)** — Cláusula 6ª.
@@ -33,7 +33,7 @@ js/sign.js            → Visualização + assinatura
 js/list.js            → Lógica da listagem
 js/utils.js           → Máscaras, moeda e valor por extenso
 firestore.rules       → Regras de segurança do banco
-netlify.toml          → Configuração de deploy da Netlify
+.nojekyll             → Faz o GitHub Pages servir os arquivos sem processar
 RELATORIO.md          → Falatório / documentação do sistema
 ```
 
@@ -60,9 +60,9 @@ Abra o arquivo [`js/firebase-config.js`](js/firebase-config.js) e:
 - Cole os valores do `firebaseConfig` (apiKey, projectId, etc.).
 - Troque a **senha do painel** em `ADMIN_SENHA` por uma senha sua.
 
-### 3) Subir para o GitHub (privado)
+### 3) Subir para o GitHub
 
-Este repositório já é o do projeto. Basta enviar as alterações:
+Este repositório já é o do projeto. Depois de colar as chaves do Firebase, envie:
 
 ```bash
 git add .
@@ -70,15 +70,24 @@ git commit -m "Configura Firebase do sistema de contratos"
 git push
 ```
 
-### 4) Publicar na Netlify
+### 4) Deixar o repositório PÚBLICO
 
-1. Acesse <https://app.netlify.com> → **Add new site → Import an existing project**.
-2. Conecte sua conta do **GitHub** e selecione este repositório (privado funciona).
-3. Em configurações de build:
-   - **Build command**: deixe **vazio**
-   - **Publish directory**: `.` (ponto)
-4. Clique em **Deploy**. Ao final, a Netlify te dá um link, algo como
-   `https://seu-site.netlify.app`.
+> O GitHub Pages **gratuito** só publica sites de repositórios **públicos**.
+
+1. No GitHub, abra o repositório → **Settings** (Configurações).
+2. Role até o final, em **Danger Zone** → **Change repository visibility** →
+   **Change to public** → confirme.
+
+### 5) Publicar no GitHub Pages
+
+1. Ainda em **Settings**, no menu lateral clique em **Pages**.
+2. Em **Build and deployment → Source**, escolha **Deploy from a branch**.
+3. Em **Branch**, selecione a branch **`claude/contract-generator-system-tsi0g3`**
+   (ou `main`, se você já tiver juntado o código lá) e a pasta **`/ (root)`**.
+4. Clique em **Save**. Aguarde ~1 minuto.
+
+O GitHub mostrará o link do seu site, algo como:
+`https://SEU-USUARIO.github.io/contratos-assinado/`
 
 Pronto! Seu sistema está no ar. 🎉
 
@@ -86,7 +95,7 @@ Pronto! Seu sistema está no ar. 🎉
 
 ## 🧭 Como usar no dia a dia
 
-1. Acesse `https://seu-site.netlify.app` → digite a **senha do painel**.
+1. Acesse `https://SEU-USUARIO.github.io/contratos-assinado/` → digite a **senha do painel**.
 2. Escolha **PJ** ou **PF**, preencha os dados do cliente e os valores
    (setup, mensalidade, vencimento, data). Os dados da Victorino Eng já vêm prontos.
 3. Clique em **Gerar contrato e criar link** → copie o link.
@@ -115,8 +124,15 @@ Para **segurança forte** (recomendado se for lidar com muitos clientes), ative 
 4. (Opcional) Adicione uma tela de login com e-mail/senha do Firebase no painel.
 
 > A senha do painel é uma proteção **client-side**: bloqueia o uso casual, mas não
-> substitui o Authentication para dados sensíveis. Como o repositório é **privado**
-> e o link da Netlify não é público/indexado, isso atende bem o uso interno.
+> substitui o Authentication para dados sensíveis. As páginas do painel usam
+> `noindex` (não aparecem em buscadores) e o link do cliente só é acessível por
+> quem tem o endereço do contrato — o que atende bem o uso interno.
+>
+> ⚠️ Como o repositório ficará **público**, qualquer pessoa poderá **ler o código**
+> (isso é normal em sites estáticos). Nunca coloque senhas de verdade de sistemas
+> importantes no `firebase-config.js`; a `apiKey` do Firebase pode ser pública
+> (ela não dá acesso aos dados — quem protege os dados são as `firestore.rules`).
+> Para segurança real, ative o **Firebase Authentication** conforme abaixo.
 
 ---
 

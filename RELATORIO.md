@@ -11,7 +11,8 @@ feito, quais decisões foram tomadas e o que você precisa fazer para colocá-lo
 - Você preenche os **dados do cliente** (podendo ser **PJ** ou **PF**).
 - Os **dados da sua empresa (Victorino Eng)** já vêm prontos, sem redigitar.
 - O sistema gera o contrato pronto **para o cliente assinar**, por meio de um **link**.
-- Hospedar em **GitHub privado**, publicar na **Netlify** e usar **Firebase** como banco.
+- Hospedar no **GitHub** (repositório público), publicar no **GitHub Pages** e usar
+  **Firebase** como banco.
 - Uma alteração no seu contrato: **carência de 6 meses → 1 ano**, com **reajuste de
   +50% no valor da parcela a cada 1 ano**.
 
@@ -63,7 +64,7 @@ inadimplência, LGPD, foro etc.) foi mantido **idêntico** ao seu contrato.
 Optei por um **site estático** (HTML + CSS + JavaScript puro), sem framework e sem
 etapa de build. Motivos:
 
-- **Deploy simples na Netlify**: é só apontar para o repositório, sem configuração.
+- **Deploy simples no GitHub Pages**: é só ligar o Pages nas configurações do repo.
 - **Zero manutenção de dependências**: nada de `npm install`, versões quebrando etc.
 - **Rápido e barato**: roda no navegador; o Firebase (plano gratuito) cobre bem o uso.
 
@@ -110,7 +111,7 @@ etapa de build. Motivos:
 | Interface | HTML5 + CSS3 | Simples, rápido, sem build. |
 | Lógica | JavaScript (ES Modules) | Nativo do navegador, sem dependências. |
 | Banco de dados | Firebase Firestore | Gratuito para o volume esperado, tempo real, fácil. |
-| Hospedagem | Netlify | Deploy automático a partir do GitHub, HTTPS grátis. |
+| Hospedagem | GitHub Pages | Gratuito, HTTPS grátis, publica direto do repositório. |
 | Assinatura | Canvas HTML | Desenho à mão, sem serviços pagos. |
 | PDF | Impressão do navegador | Confiável e sem bibliotecas externas. |
 
@@ -138,7 +139,11 @@ assinatura { nome, dataURL (imagem), assinadoEm, aceite, userAgent }
 - **Painel protegido por senha** (configurável em `firebase-config.js`).
 - **Regras do Firestore** (`firestore.rules`): o cliente só consegue **ler** e
   **assinar** pelo link; **não** pode alterar cláusulas nem apagar contratos.
-- **Repositório privado** + link da Netlify **não indexado** (meta `noindex`).
+- Páginas do painel com **`noindex`** (não aparecem em buscadores); o link do
+  cliente só é acessível por quem tem o endereço do contrato.
+- Como o repositório é **público**, o código fica visível (normal em site estático).
+  A `apiKey` do Firebase pode ser pública — quem protege os dados são as
+  `firestore.rules`. Para segurança real, ative o **Firebase Authentication**.
 - Para uso intenso, o README explica como ativar o **Firebase Authentication**
   (segurança forte de verdade).
 
@@ -161,7 +166,7 @@ assinatura { nome, dataURL (imagem), assinadoEm, aceite, userAgent }
 1. Criar um projeto no **Firebase** e colar as credenciais em `js/firebase-config.js`.
 2. Publicar as **regras** do Firestore (arquivo `firestore.rules`).
 3. Trocar a **senha do painel**.
-4. Conectar o repositório à **Netlify** e publicar.
+4. Deixar o repositório **público** e ligar o **GitHub Pages** (Settings → Pages).
 
 O passo a passo completo, com telas e cliques, está no **[README.md](README.md)**.
 
