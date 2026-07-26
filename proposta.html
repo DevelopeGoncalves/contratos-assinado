@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposta · Victorino Eng</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="img/logo_principal.png">
+  <link rel="stylesheet" href="css/styles.css?v=4">
+</head>
+<body>
+  <header class="topbar no-print">
+    <div class="brand">
+      <a href="index.html"><img src="img/logo_horizontal.png" alt="Victorino Eng" class="logo-img"></a>
+    </div>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="contratos.html">Contratos</a>
+      <a href="proposta.html" class="ativo">Proposta</a>
+      <a href="configuracoes.html">Configurações</a>
+      <a href="#" id="btn-sair">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container" id="app" style="display:none">
+    <div class="card no-print">
+      <h2>Gerar proposta comercial</h2>
+      <p class="desc">Preencha os dados do cliente e os valores. A prévia atualiza ao lado; ao final, clique em <strong>Baixar PDF</strong> para enviar ao cliente.</p>
+
+      <form id="form-prop">
+        <fieldset>
+          <legend>Dados da proposta</legend>
+          <div class="grid">
+            <div class="field full"><label>Nome do cliente *</label><input name="cliente" placeholder="Ex.: Gaby Lanches"></div>
+            <div class="field full"><label>Objetivo</label><input name="objetivo"></div>
+            <div class="field"><label>Data de emissão</label><input name="dataEmissao" type="date"></div>
+            <div class="field"><label>Validade (dias)</label><input name="validadeDias" type="number" min="1"></div>
+            <div class="field"><label>Preço padrão de tabela (mercado) R$</label><input name="precoMercado" type="number" step="0.01"></div>
+            <div class="field full"><label>Considerações iniciais <span class="hint">(use {cliente} onde quiser o nome)</span></label><textarea name="consideracoes" rows="5"></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Opção 01</legend>
+          <div class="grid">
+            <div class="field full"><label>Título</label><input name="op1_titulo"></div>
+            <div class="field"><label>Preço de tabela (original) R$</label><input name="op1_precoTabela" type="number" step="0.01"></div>
+            <div class="field"><label>Taxa de implantação (desconto) R$</label><input name="op1_implantacao" type="number" step="0.01"></div>
+            <div class="field"><label>Mensalidade R$</label><input name="op1_mensalidade" type="number" step="0.01"></div>
+            <div class="field full"><label>Recursos <span class="hint">(um por linha)</span></label><textarea name="op1_recursos" rows="5"></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Opção 02</legend>
+          <div class="grid">
+            <div class="field full"><label>Título</label><input name="op2_titulo"></div>
+            <div class="field"><label>Preço de tabela (original) R$</label><input name="op2_precoTabela" type="number" step="0.01"></div>
+            <div class="field"><label>Taxa de implantação (desconto) R$</label><input name="op2_implantacao" type="number" step="0.01"></div>
+            <div class="field"><label>Mensalidade R$</label><input name="op2_mensalidade" type="number" step="0.01"></div>
+            <div class="field full"><label>Recursos <span class="hint">(um por linha)</span></label><textarea name="op2_recursos" rows="5"></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Destaque "Mais vantajoso"</legend>
+          <div class="tipo-toggle">
+            <label><input type="radio" name="destaque" value="1"><span>Opção 01</span></label>
+            <label><input type="radio" name="destaque" value="2" checked><span>Opção 02</span></label>
+            <label><input type="radio" name="destaque" value=""><span>Nenhuma</span></label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="button" id="btn-pdf" class="btn btn-primary">🖨 Baixar PDF / Imprimir</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="doc-alvo"></div>
+  </main>
+
+  <div class="loading" id="carregando">Carregando…</div>
+  <script type="module" src="js/proposta.js?v=4"></script>
+</body>
+</html>

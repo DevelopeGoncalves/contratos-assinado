@@ -30,6 +30,7 @@ index.html            → Painel admin: login + início (link do cliente)
 configuracoes.html    → Admin: dados da empresa + valores padrão (salvos no Firebase)
 contratos.html        → Admin: lista de contratos enviados pelos clientes
 contrato.html         → Admin: revisar 1 contrato, ajustar valores e gerar PDF
+proposta.html         → Admin: gerar proposta comercial (preço de tabela x desconto) e baixar PDF
 cliente.html          → PÚBLICO: formulário que o cliente preenche (sem senha)
 css/styles.css        → Estilos (identidade visual da marca)
 img/                  → Logos da Victorino Eng (horizontal e principal)
@@ -89,6 +90,12 @@ Pronto! O sistema está no ar e seguro. 🎉
 4. Ajusta os valores se precisar, define a data, clica em **💾 Salvar** e depois em
    **🖨 Baixar PDF / Imprimir** (no diálogo de impressão escolha "Salvar como PDF").
 5. Envie o PDF para o cliente assinar (impresso ou por outra ferramenta de assinatura).
+
+### Propostas comerciais
+
+Na aba **Proposta**, preencha o nome do cliente e os valores (preço de tabela x
+preço com desconto) e clique em **Baixar PDF** para enviar. Cada cliente gera uma
+proposta diferente — você edita o nome e os dados a cada envio.
 
 ---
 
