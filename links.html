@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Links de contrato · Victorino Eng</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="img/logo_principal.png">
+  <link rel="stylesheet" href="css/styles.css?v=3">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="index.html"><img src="img/logo_horizontal.png" alt="Victorino Eng" class="logo-img"></a>
+    </div>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="links.html" class="ativo">Links de contrato</a>
+      <a href="contratos.html">Contratos</a>
+      <a href="proposta.html">Proposta</a>
+      <a href="configuracoes.html">Configurações</a>
+      <a href="#" id="btn-sair">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container" id="app" style="display:none">
+    <div class="card">
+      <h2>🔗 Gerar link de contrato por cliente</h2>
+      <p class="desc">
+        Crie um link exclusivo para cada cliente com <strong>valores próprios</strong> (implementação e
+        mensalidade). Os dados da sua empresa e as cláusulas do contrato continuam os mesmos —
+        você só define os valores. Cada link tem um <strong>ID único</strong>; o cliente abre, preenche
+        os dados dele e envia. Você pode gerar quantos links quiser.
+      </p>
+
+      <form id="form-link">
+        <fieldset>
+          <legend>Identificação (só para você)</legend>
+          <div class="grid">
+            <div class="field full">
+              <label>Nome / apelido do cliente</label>
+              <input name="clienteNome" placeholder="Ex.: Padaria do João">
+              <div class="hint">Serve só para você reconhecer o link na lista abaixo. Não aparece no contrato.</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Valores deste cliente</legend>
+          <div class="grid">
+            <div class="field full"><label>Objeto (nome do software)</label><input name="objeto"></div>
+            <div class="field"><label>Taxa de implementação (Setup) R$</label><input name="valorSetup" type="number" step="0.01"></div>
+            <div class="field"><label>Mensalidade R$</label><input name="valorMensalidade" type="number" step="0.01"></div>
+            <div class="field"><label>Dia de vencimento</label><input name="diaVencimento" type="number" min="1" max="28"></div>
+            <div class="field"><label>Cidade (foro/assinatura)</label><input name="cidadeAssinatura"></div>
+            <div class="field"><label>UF</label><input name="ufAssinatura" maxlength="2" style="text-transform:uppercase"></div>
+            <div class="field"><label>Carência / fidelidade (meses)</label><input name="fidelidadeMeses" type="number" min="1"></div>
+            <div class="field"><label>Reajuste (% a cada 12 meses)</label><input name="reajustePercent" type="number" min="0"></div>
+          </div>
+          <div class="hint">Os campos já vêm preenchidos com os valores padrão das Configurações. Altere apenas o que muda para este cliente.</div>
+        </fieldset>
+
+        <div id="link-msg" class="banner ok" style="display:none"></div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">🔗 Gerar link do cliente</button>
+        </div>
+      </form>
+
+      <!-- Link recém-gerado -->
+      <div id="novo-link" style="display:none;margin-top:8px">
+        <div class="banner ok"><span>✅</span><span>Link gerado! Copie e envie para o seu cliente.</span></div>
+        <div class="link-box">
+          <input id="novo-link-url" readonly>
+          <button class="btn btn-gold" id="btn-copiar-novo">Copiar</button>
+        </div>
+        <div class="actions"><a href="#" id="btn-abrir-novo" target="_blank" class="btn btn-outline">Abrir o formulário</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Links já criados</h2>
+      <p class="desc">Cada link leva o cliente ao formulário com os valores que você definiu.</p>
+      <div id="lista-links"></div>
+    </div>
+  </main>
+
+  <div class="loading" id="carregando">Carregando…</div>
+  <script type="module" src="js/links.js?v=4"></script>
+</body>
+</html>

@@ -27,6 +27,7 @@ Funciona em dois lados:
 
 ```
 index.html            → Painel admin: login + início (link do cliente)
+links.html            → Admin: gerar 1 link por cliente com valores próprios (implementação/mensalidade)
 configuracoes.html    → Admin: dados da empresa + valores padrão (salvos no Firebase)
 contratos.html        → Admin: lista de contratos enviados pelos clientes
 contrato.html         → Admin: revisar 1 contrato, ajustar valores e gerar PDF
@@ -39,6 +40,7 @@ js/db.js              → Auth + Firestore (config e contratos)
 js/contract-template.js → Texto do contrato (empresa/valores vêm do Firebase)
 js/app.js             → Login + dashboard (index)
 js/config.js          → Tela de configurações
+js/links.js           → Geração de links de contrato por cliente
 js/cliente.js         → Formulário do cliente
 js/list.js            → Lista de contratos
 js/contrato-admin.js  → Tela de um contrato (editar valores + PDF)
@@ -90,6 +92,29 @@ Pronto! O sistema está no ar e seguro. 🎉
 4. Ajusta os valores se precisar, define a data, clica em **💾 Salvar** e depois em
    **🖨 Baixar PDF / Imprimir** (no diálogo de impressão escolha "Salvar como PDF").
 5. Envie o PDF para o cliente assinar (impresso ou por outra ferramenta de assinatura).
+
+### Um link por cliente (valores diferentes)
+
+Quando cada cliente tem **valores diferentes** (taxa de implementação e mensalidade),
+use a aba **Links de contrato** (card ao lado de Configurações):
+
+1. Preencha o **nome do cliente** (só para você identificar) e os **valores** desse
+   cliente — os campos já vêm preenchidos com os padrões das Configurações.
+2. Clique em **🔗 Gerar link do cliente**. O sistema cria um **link com ID único**
+   (ex.: `cliente.html?link=abc123...`).
+3. Copie e envie esse link. O cliente abre, vê **os valores daquele link** (bloqueados),
+   preenche só os dados dele e envia.
+4. O contrato chega em **Contratos** como qualquer outro, já com os valores do link.
+
+> Os **dados da sua empresa** e as **cláusulas** do contrato continuam iguais — o link
+> muda **apenas os valores**. Você pode gerar quantos links quiser, um para cada cliente.
+>
+> O **link padrão** (tela Início) continua existindo e usa os valores das Configurações,
+> iguais para todos. Para valores diferentes por cliente, use os **Links de contrato**.
+
+> ⚠️ **Importante:** depois de atualizar o sistema, **republique as regras do Firestore**
+> (arquivo [`firestore.rules`](firestore.rules)) no console do Firebase — elas agora
+> incluem a coleção `links` e a validação dos valores por link.
 
 ### Propostas comerciais
 

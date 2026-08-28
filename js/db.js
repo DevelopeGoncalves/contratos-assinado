@@ -120,3 +120,38 @@ export async function excluirContrato(id) {
   await init();
   await fs.deleteDoc(fs.doc(db, COL, id));
 }
+
+// ---- LINKS DE CONTRATO -----------------------------------------------------
+//  Cada link é um "convite" com valores próprios (implementação, mensalidade,
+//  etc.) para UM cliente específico. Os dados da empresa continuam vindo do
+//  config; só os valores mudam por link. Criação/edição: apenas o admin.
+const COL_LINKS = "links";
+
+export async function criarLink(dados) {
+  await init();
+  const id = novoId();
+  await fs.setDoc(fs.doc(db, COL_LINKS, id), {
+    ...dados,
+    id,
+    createdAt: fs.serverTimestamp()
+  });
+  return id;
+}
+
+export async function listarLinks() {
+  await init();
+  const q = fs.query(fs.collection(db, COL_LINKS), fs.orderBy("createdAt", "desc"));
+  const snap = await fs.getDocs(q);
+  return snap.docs.map((d) => d.data());
+}
+
+export async function buscarLink(id) {
+  await init();
+  const snap = await fs.getDoc(fs.doc(db, COL_LINKS, id));
+  return snap.exists() ? snap.data() : null;
+}
+
+export async function excluirLink(id) {
+  await init();
+  await fs.deleteDoc(fs.doc(db, COL_LINKS, id));
+}

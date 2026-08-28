@@ -15,6 +15,7 @@
     </div>
     <nav id="nav" style="display:none">
       <a href="index.html" class="ativo">Início</a>
+      <a href="links.html">Links de contrato</a>
       <a href="contratos.html">Contratos</a>
       <a href="proposta.html">Proposta</a>
       <a href="configuracoes.html">Configurações</a>
@@ -43,6 +44,10 @@
       <h2>Bem-vindo 👋</h2>
       <p class="desc">Logado como <strong id="email-logado"></strong>.</p>
       <div class="grid">
+        <a href="links.html" class="card-link">
+          <div class="ico">🔗</div><h3>Links de contrato</h3>
+          <p>Gere um link por cliente com valores próprios (implementação e mensalidade). Cada link tem um ID.</p>
+        </a>
         <a href="contratos.html" class="card-link">
           <div class="ico">📄</div><h3>Contratos recebidos</h3>
           <p>Ver os dados enviados pelos clientes, ajustar valores e gerar o PDF.</p>
@@ -59,8 +64,12 @@
     </div>
 
     <div class="card">
-      <h2>🔗 Link para o cliente preencher</h2>
-      <p class="desc">Envie este link para o cliente. Ele preenche só os dados dele (sem senha) — os valores ficam bloqueados.</p>
+      <h2>🔗 Link padrão do cliente</h2>
+      <p class="desc">
+        Este é o link <strong>único</strong> — ele usa os valores padrão das Configurações, iguais para todos.
+        Para enviar valores diferentes por cliente (implementação e mensalidade), use
+        <a href="links.html"><strong>Links de contrato</strong></a> e gere um link exclusivo para cada um.
+      </p>
       <div class="link-box">
         <input id="link-cliente" readonly>
         <button class="btn btn-gold" id="btn-copiar">Copiar</button>

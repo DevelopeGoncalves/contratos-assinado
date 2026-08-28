@@ -24,7 +24,31 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/config/contrato).data;
     }
 
+    // Dados de um link de contrato específico (valores próprios de um cliente).
+    function linkData(id) {
+      return get(/databases/$(database)/documents/links/$(id)).data;
+    }
+
+    // Confere se os valores enviados batem EXATAMENTE com a fonte (config ou link).
+    function valoresBatem(src) {
+      return request.resource.data.objeto == src.objeto
+        && request.resource.data.valorSetup == src.valorSetup
+        && request.resource.data.valorMensalidade == src.valorMensalidade
+        && request.resource.data.diaVencimento == src.diaVencimento
+        && request.resource.data.cidadeAssinatura == src.cidadeAssinatura
+        && request.resource.data.ufAssinatura == src.ufAssinatura
+        && request.resource.data.fidelidadeMeses == src.fidelidadeMeses
+        && request.resource.data.reajustePercent == src.reajustePercent;
+    }
+
     match /config/{doc} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Links de contrato: leitura pública (o cliente precisa ver os valores do
+    // link dele); criar/editar/excluir só o admin logado.
+    match /links/{id} {
       allow read: if true;
       allow write: if request.auth != null;
     }
@@ -34,16 +58,19 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null;
 
       // Criação pública pelo cliente: precisa nascer "pendente" e com os
-      // valores EXATAMENTE iguais aos definidos pelo admin no config.
-      allow create: if request.resource.data.status == 'pendente'
-        && request.resource.data.objeto == cfg().objeto
-        && request.resource.data.valorSetup == cfg().valorSetup
-        && request.resource.data.valorMensalidade == cfg().valorMensalidade
-        && request.resource.data.diaVencimento == cfg().diaVencimento
-        && request.resource.data.cidadeAssinatura == cfg().cidadeAssinatura
-        && request.resource.data.ufAssinatura == cfg().ufAssinatura
-        && request.resource.data.fidelidadeMeses == cfg().fidelidadeMeses
-        && request.resource.data.reajustePercent == cfg().reajustePercent;
+      // valores EXATAMENTE iguais aos definidos pelo admin. A fonte dos valores
+      // é o LINK do cliente (quando enviado linkId) ou o config padrão.
+      allow create: if request.resource.data.status == 'pendente' && (
+        (
+          'linkId' in request.resource.data
+          && request.resource.data.linkId is string
+          && request.resource.data.linkId.size() > 0
+          && valoresBatem(linkData(request.resource.data.linkId))
+        ) || (
+          !('linkId' in request.resource.data)
+          && valoresBatem(cfg())
+        )
+      );
     }
   }
 }
