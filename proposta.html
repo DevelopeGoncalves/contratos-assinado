@@ -6,7 +6,7 @@
   <title>Proposta · Victorino Eng</title>
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/png" href="img/logo_principal.png">
-  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="stylesheet" href="css/styles.css?v=6">
 </head>
 <body>
   <header class="topbar no-print">
@@ -38,6 +38,16 @@
             <div class="field"><label>Validade (dias)</label><input name="validadeDias" type="number" min="1"></div>
             <div class="field"><label>Preço padrão de tabela (mercado) R$</label><input name="precoMercado" type="number" step="0.01"></div>
             <div class="field full"><label>Considerações iniciais <span class="hint">(use {cliente} onde quiser o nome)</span></label><textarea name="consideracoes" rows="5"></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Recursos inclusos no sistema</legend>
+          <div class="grid">
+            <div class="field full">
+              <label>Recursos <span class="hint">(um por linha, no formato: Título | Descrição)</span></label>
+              <textarea name="recursos" rows="8" placeholder="Cardápio Digital Exclusivo | Um link próprio para enviar aos clientes pelo WhatsApp..."></textarea>
+            </div>
           </div>
         </fieldset>
 
@@ -83,6 +93,6 @@
   </main>
 
   <div class="loading" id="carregando">Carregando…</div>
-  <script type="module" src="js/proposta.js?v=5"></script>
+  <script type="module" src="js/proposta.js?v=6"></script>
 </body>
 </html>

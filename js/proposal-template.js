@@ -76,7 +76,7 @@ export function gerarPropostaHTML(d, cfg = {}) {
   const consid = (d.consideracoes || "").replace(/\{cliente\}/g, cliente)
     .split(/\n\s*\n/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
   const recursos = (d.recursos || []).map(([t, x]) => `
-    <div class="rec-card"><h4>${t}</h4><p>${x}</p></div>`).join("");
+    <div class="rec-card"><h4>${t}</h4>${x ? `<p>${x}</p>` : ""}</div>`).join("");
   const dataEmissao = d.dataEmissao ? dataPorExtenso(d.dataEmissao) : dataPorExtenso(new Date().toISOString().slice(0, 10));
 
   // "mostrar" define o que aparece: só a Opção 01, só a Opção 02, ou as duas.

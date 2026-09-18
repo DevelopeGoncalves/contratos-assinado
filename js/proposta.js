@@ -2,7 +2,7 @@
 //  proposta.html — gerador de proposta comercial (admin). Preview + PDF.
 // ============================================================================
 import { exigirLogin, sair, obterConfig } from "./db.js";
-import { gerarPropostaHTML, PROPOSTA_PADRAO } from "./proposal-template.js?v=5";
+import { gerarPropostaHTML, PROPOSTA_PADRAO } from "./proposal-template.js?v=6";
 
 const $ = (id) => document.getElementById(id);
 let CFG = null;
@@ -27,6 +27,7 @@ function preencherPadrao() {
   f.validadeDias.value = p.validadeDias;
   f.precoMercado.value = p.precoMercado;
   f.consideracoes.value = p.consideracoes;
+  f.recursos.value = p.recursos.map(([t, x]) => `${t} | ${x}`).join("\n");
   f.op1_titulo.value = p.opcao1.titulo;
   f.op1_precoTabela.value = p.opcao1.precoTabela;
   f.op1_implantacao.value = p.opcao1.implantacao;
@@ -43,6 +44,11 @@ function coletar() {
   const f = $("form-prop").elements;
   const g = (n) => f[n].value;
   const linhas = (n) => g(n).split("\n").map((s) => s.trim()).filter(Boolean);
+  // "Título | Descrição" por linha. Sem "|", vira um card só com título.
+  const recursos = linhas("recursos").map((l) => {
+    const i = l.indexOf("|");
+    return i === -1 ? [l.trim(), ""] : [l.slice(0, i).trim(), l.slice(i + 1).trim()];
+  });
   const mostrar = document.querySelector('[name="mostrar"]:checked')?.value ?? "ambas";
   return {
     cliente: g("cliente").trim(),
@@ -51,7 +57,7 @@ function coletar() {
     validadeDias: Number(g("validadeDias")) || 15,
     precoMercado: Number(g("precoMercado")) || 0,
     consideracoes: g("consideracoes"),
-    recursos: PROPOSTA_PADRAO.recursos,
+    recursos,
     mostrar,
     opcao1: {
       titulo: g("op1_titulo"), precoTabela: Number(g("op1_precoTabela")) || 0,
