@@ -6,7 +6,7 @@
   <title>Proposta · Victorino Eng</title>
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/png" href="img/logo_principal.png">
-  <link rel="stylesheet" href="css/styles.css?v=4">
+  <link rel="stylesheet" href="css/styles.css?v=5">
 </head>
 <body>
   <header class="topbar no-print">
@@ -64,11 +64,12 @@
         </fieldset>
 
         <fieldset>
-          <legend>Destaque "Mais vantajoso"</legend>
+          <legend>O que mostrar na proposta</legend>
+          <p class="hint" style="margin:0 0 10px">Já fechou com o cliente? Escolha só a opção combinada para gerar a proposta de confirmação. Ainda comparando? Deixe "As duas".</p>
           <div class="tipo-toggle">
-            <label><input type="radio" name="destaque" value="1"><span>Opção 01</span></label>
-            <label><input type="radio" name="destaque" value="2" checked><span>Opção 02</span></label>
-            <label><input type="radio" name="destaque" value=""><span>Nenhuma</span></label>
+            <label><input type="radio" name="mostrar" value="1"><span>Só a Opção 01<small>Confirmação</small></span></label>
+            <label><input type="radio" name="mostrar" value="2"><span>Só a Opção 02<small>Confirmação</small></span></label>
+            <label><input type="radio" name="mostrar" value="ambas" checked><span>As duas<small>Comparativo</small></span></label>
           </div>
         </fieldset>
 
@@ -82,6 +83,6 @@
   </main>
 
   <div class="loading" id="carregando">Carregando…</div>
-  <script type="module" src="js/proposta.js?v=4"></script>
+  <script type="module" src="js/proposta.js?v=5"></script>
 </body>
 </html>

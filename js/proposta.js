@@ -2,7 +2,7 @@
 //  proposta.html — gerador de proposta comercial (admin). Preview + PDF.
 // ============================================================================
 import { exigirLogin, sair, obterConfig } from "./db.js";
-import { gerarPropostaHTML, PROPOSTA_PADRAO } from "./proposal-template.js?v=4";
+import { gerarPropostaHTML, PROPOSTA_PADRAO } from "./proposal-template.js?v=5";
 
 const $ = (id) => document.getElementById(id);
 let CFG = null;
@@ -43,8 +43,7 @@ function coletar() {
   const f = $("form-prop").elements;
   const g = (n) => f[n].value;
   const linhas = (n) => g(n).split("\n").map((s) => s.trim()).filter(Boolean);
-  const destaque = (f.destaque.value !== undefined)
-    ? (document.querySelector('[name="destaque"]:checked')?.value ?? "2") : "2";
+  const mostrar = document.querySelector('[name="mostrar"]:checked')?.value ?? "ambas";
   return {
     cliente: g("cliente").trim(),
     objetivo: g("objetivo"),
@@ -53,7 +52,7 @@ function coletar() {
     precoMercado: Number(g("precoMercado")) || 0,
     consideracoes: g("consideracoes"),
     recursos: PROPOSTA_PADRAO.recursos,
-    destaque,
+    mostrar,
     opcao1: {
       titulo: g("op1_titulo"), precoTabela: Number(g("op1_precoTabela")) || 0,
       implantacao: Number(g("op1_implantacao")) || 0, mensalidade: Number(g("op1_mensalidade")) || 0,

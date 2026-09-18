@@ -49,12 +49,12 @@ function desconto(tabela, preco) {
   return Math.round((1 - preco / tabela) * 100);
 }
 
-function opcaoHTML(op, n, destaque) {
+function opcaoHTML(op, n, destaque, badgeTxt = "★ MAIS VANTAJOSO") {
   const off = desconto(op.precoTabela, op.implantacao);
   const recursos = (op.recursos || []).map((r) => `<li>${r}</li>`).join("");
   return `
   <div class="op-card ${destaque ? "op-destaque" : ""}">
-    ${destaque ? `<div class="op-badge">★ MAIS VANTAJOSO</div>` : ""}
+    ${destaque ? `<div class="op-badge">${badgeTxt}</div>` : ""}
     <div class="op-num">Opção ${String(n).padStart(2, "0")}</div>
     <h3>${op.titulo || ""}</h3>
     <div class="op-precos">
@@ -78,6 +78,17 @@ export function gerarPropostaHTML(d, cfg = {}) {
   const recursos = (d.recursos || []).map(([t, x]) => `
     <div class="rec-card"><h4>${t}</h4><p>${x}</p></div>`).join("");
   const dataEmissao = d.dataEmissao ? dataPorExtenso(d.dataEmissao) : dataPorExtenso(new Date().toISOString().slice(0, 10));
+
+  // "mostrar" define o que aparece: só a Opção 01, só a Opção 02, ou as duas.
+  const mostrar = d.mostrar || "ambas";
+  let opcoes;
+  if (mostrar === "1") {
+    opcoes = opcaoHTML(d.opcao1, 1, true, "★ OPÇÃO ESCOLHIDA");
+  } else if (mostrar === "2") {
+    opcoes = opcaoHTML(d.opcao2, 2, true, "★ OPÇÃO ESCOLHIDA");
+  } else {
+    opcoes = opcaoHTML(d.opcao1, 1, d.destaque === "1") + opcaoHTML(d.opcao2, 2, d.destaque !== "1");
+  }
 
   return `
   <div class="doc proposta">
@@ -107,10 +118,9 @@ export function gerarPropostaHTML(d, cfg = {}) {
 
     <p class="prop-nota"><strong>Atenção:</strong> nosso valor padrão de tabela para a montagem e liberação deste sistema é de <strong>R$ ${formatarMoeda(d.precoMercado)}</strong> para qualquer cliente de mercado. As condições abaixo são <strong>exclusivas</strong> para a ${cliente}.</p>
 
-    <h2>3. Opções de investimento e comparativo de desconto</h2>
-    <div class="op-grid">
-      ${opcaoHTML(d.opcao1, 1, d.destaque === "1")}
-      ${opcaoHTML(d.opcao2, 2, d.destaque === "2")}
+    <h2>${mostrar === "ambas" ? "3. Opções de investimento e comparativo de desconto" : "3. Investimento"}</h2>
+    <div class="op-grid ${mostrar === "ambas" ? "" : "op-grid-uma"}">
+      ${opcoes}
     </div>
 
     <p class="prop-rodape">Proposta emitida por ${emp.razaoSocial} — ${emp.site || ""}. Estamos à disposição para tirar qualquer dúvida.</p>

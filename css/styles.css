@@ -234,6 +234,7 @@ table.lista tr:hover td { background: #f8fafc; }
 .rec-card p { margin: 0; font-size: 12.5px; color: #4a4560; }
 .prop-nota { background: #fff7e6; border: 1px solid #f0c36d; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #6b5200; margin: 18px 0; }
 .op-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.op-grid.op-grid-uma { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
 .op-card { position: relative; border: 1.5px solid var(--borda); border-radius: 14px; padding: 22px 18px 18px; background: #fff; break-inside: avoid; }
 .op-destaque { border-color: var(--roxo); box-shadow: 0 8px 24px rgba(128,88,232,.18); }
 .op-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--grad); color: #fff; font-size: 11px; font-weight: 800; padding: 5px 14px; border-radius: 999px; white-space: nowrap; }
